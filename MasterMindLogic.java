@@ -7,35 +7,31 @@ public class MasterMindLogic {
 
     private final Color[] SECRET;
     private final Color[] PALETTE;
-    private int rounds;
     private final String[] LABELS;
 
     // Constructor
-    public MasterMindLogic(Color[] palette, int maxRounds, int secretLength, String[] labels) {
+    public MasterMindLogic(Color[] palette, int secretLength, String[] labels) {
         this.PALETTE = palette;
-        this.SECRET = getSecret(secretLength);
-        this.rounds = maxRounds;
+        this.SECRET = generateSecret(secretLength);
         this.LABELS = labels;
     }
 
     // Secret generator
-    public Color[] getSecret(int secretLength) {
+    public Color[] generateSecret(int secretLength) {
         Random random = new Random();
-        Color[] newSecret = new Color[secretLength];
-
-        int randomIndex = 0;
+        Color[] secret = new Color[secretLength];
         for (int i = 0; i < secretLength; i++) {
-            randomIndex = random.nextInt(PALETTE.length);
-            newSecret[i] = PALETTE[randomIndex];
+            secret[i] = PALETTE[random.nextInt(PALETTE.length)];
         }
-        return newSecret;
+        return secret;
     }
 
-    // Check guess and return feedback
+    // Check guess and return the number of black and white pins
     public Result checkGuess(Color[] guess) {
         int blacks = 0;
         int whites = 0;
 
+        // Storing colors for white pin calculation
         ArrayList<Color> guessSlots = new ArrayList<>();
         ArrayList<Color> secretSlots = new ArrayList<>();
 
@@ -62,21 +58,6 @@ public class MasterMindLogic {
         return new Result(blacks, whites);
     }
 
-    public String showSecret() {
-        StringBuilder sb = new StringBuilder();
-
-        // Convert PALETTE (Colors) into a List<Color>
-        List<Color> paletteList = List.of(PALETTE);
-
-        for (Color c : SECRET) {
-            int index = paletteList.indexOf(c);
-            sb.append(LABELS[index]);
-        }
-
-        return sb.toString();
-    }
-
-
     // Result structure
     public static class Result {
         public int blacks, whites;
@@ -86,5 +67,20 @@ public class MasterMindLogic {
             whites = w;
         }
     }
+
+    // Returns the correct answer as a String of labels. Example: RVLR
+    public String showSecret() {
+        StringBuilder result = new StringBuilder();
+        for (Color c : SECRET) {
+            for (int i = 0; i < PALETTE.length; i++) {
+                if (PALETTE[i].equals(c)) {
+                    result.append(LABELS[i]);
+                    break;
+                }
+            }
+        }
+        return result.toString();
+    }
+
 
 }

@@ -10,20 +10,19 @@ public class MasterMindUI {
     private static final int GUESS_SIZE = 35;
     private static final int BUTTON_SIZE = 50;
     // Colors
-    private static final Color BG_COLOR = new Color(194, 243, 213);
+    private static final Color BG_COLOR = new Color(141, 69, 220);
     private static final Color BASE_COLOR = new Color(187, 183, 172);
     private Color selectedColor = null;
     // Game logic
     private final MasterMindLogic LOGIC;
 
     // Stores each row of guessed colors (4 circles per row)
-    private List<Circle[]> guessRows = new ArrayList<>();
+    private ArrayList<Circle[]> guessRows = new ArrayList<>();
 
     // Stores each row of feedback pins (black/white pins for each guess)
-    private List<Circle[]> pinRows = new ArrayList<>();
+    private ArrayList<Circle[]> pinRows = new ArrayList<>();
 
     private int currentRow = 0;
-
 
     // Circle class for rounded objects
     private static class Circle extends JButton {
@@ -37,14 +36,13 @@ public class MasterMindUI {
             setBorderPainted(false);
             setFocusPainted(false);
             setOpaque(false);
-
-            if (!clickable) setEnabled(false);
+            setEnabled(clickable);
         }
 
         @Override
         protected void paintComponent(Graphics g) {
             g.setColor(color);
-            g.fillOval(0, 0, getWidth(), getHeight());
+            g.fillOval(0, 0, diameter, diameter); // use diameter instead of getWidth()/getHeight() if you want consistent circles
             super.paintComponent(g);
         }
 
@@ -61,8 +59,8 @@ public class MasterMindUI {
         public Color getColor() {
             return color;
         }
-
     }
+
 
     // ----- Helper functions -----
     // Create styled JButton
@@ -148,7 +146,7 @@ public class MasterMindUI {
             JOptionPane.showMessageDialog(null, "You guessed it!");
             return;
         } else {
-            JOptionPane.showMessageDialog(null, "Black: " + blacks + ". Whites: " + whites);
+            JOptionPane.showMessageDialog(null, "Black: " + blacks + ". White: " + whites);
         }
         if (currentRow == 9) {
             JOptionPane.showMessageDialog(null, "You lost, the answer was: " + LOGIC.showSecret());

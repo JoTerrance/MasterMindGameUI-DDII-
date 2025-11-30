@@ -18,7 +18,7 @@ public class Main {
         int secretLength = 4;
 
         // Create logic
-        MasterMindLogic logic = new MasterMindLogic(palette, rounds, secretLength, labels);
+        MasterMindLogic logic = new MasterMindLogic(palette, secretLength, labels);
 
         // Create UI
         SwingUtilities.invokeLater(() -> {
