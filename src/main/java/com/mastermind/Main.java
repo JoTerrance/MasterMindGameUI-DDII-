@@ -1,3 +1,5 @@
+package com.mastermind;
+
 import javax.swing.*;
 import java.awt.Color;
 
